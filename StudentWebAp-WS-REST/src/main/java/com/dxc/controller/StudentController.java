@@ -4,7 +4,9 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,18 +50,26 @@ public class StudentController {
 		return "inserted successfully";
 	}
 	
-	@PutMapping("student")
+	@PutMapping("student/{id}")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public Student update(Student student)
+	public ResponseEntity<Student> update(@PathVariable(value = "id") int id,
+            @RequestBody Student studentData)
 	{
-		return   ((StudentController) studentRepository).update(student);
-		
+	Student student=studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + id));		
+	student.setId(studentData.getId());
+	student.setName(studentData.getName());  
+	student.setDob(studentData.getDob());
+	student.setEmail(studentData.getEmail());
+	student.setMobile(studentData.getMobile());
+	final Student updatedStudent = studentRepository.save(student);
+    return ResponseEntity.ok(updatedStudent);
 	}
 	
 	@DeleteMapping(path = "student/{id}")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public void delete(@PathVariable("id") int id)
+	public String delete(@PathVariable("id") int id)
 	{
-	studentRepository.deleteById(id);	
+	studentRepository.deleteById(id);
+	return "deleted successfully";
 	}
 }
