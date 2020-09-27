@@ -5,8 +5,15 @@ import javax.persistence.Id;
 
 @Entity
 public class Marks {
+	
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+//	private int id;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "stid",referencedColumnName = "id")
 	@Id
 	private int stid;
+//	@ManyToOne(fetch=FetchType.LAZY)
+//	@JoinColumn(name = "exid",referencedColumnName = "id")
 	private String exid;
 	private int sub1;
 	private int sub2;
