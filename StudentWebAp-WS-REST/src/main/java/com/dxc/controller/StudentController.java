@@ -47,7 +47,7 @@ public class StudentController {
 	public String addstudent(@RequestBody Student student) {
 		
 		studentRepository.save(student);
-		return "inserted successfully";
+		return "saved successfully";
 	}
 	
 	@PutMapping("student/{id}")
